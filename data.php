@@ -23,7 +23,7 @@ $tasks = [
 'is_completed' => true],
 
 ['name' => 'Встреча с другом',
-'date' => '22.09.2018',
+'date' => '24.09.2018',
 'project_category' => 'Входящие',
 'is_completed' => false],
 

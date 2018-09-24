@@ -29,19 +29,20 @@ function esc($str) {
   return $text;
 }
 
-// получить количество суток, оставшихся до дедлайна
-function get_days_left($date_deadline) {
-  $secs_in_day = 60*60*24;
-  $deadline = strtotime($date_deadline);
-  $now = time();
-  $days_left = floor(($deadline - $now)/$secs_in_day) + 1;
-  return $days_left;
+// функция определения важности задачи
+// возвращает true, если до даты дедлайна осталось менее 24ч
+function is_important($datetime_deadline) {
+  $result = false;
+  $secs_in_hour = 3600;
+  $condition = 24; //условие важности задачи - количество часов, оставшихся до даты дедлайна
+  $deadline = strtotime($datetime_deadline); //при невозможности конвертации возвращает false
+  if ($deadline) {
+    $now = time();
+    $hours_left = ($deadline - $now)/$secs_in_hour;
+    $result = $hours_left <= $condition;
+  }
+  return $result;
 }
 
-// возвращает true, если до даты дедлайна осталось менее суток (менее 24ч)
-function is_important_date($date) {
-  $days_left = get_days_left($date);
-  return $days_left == 0;
-}
 
 
