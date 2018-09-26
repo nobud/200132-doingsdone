@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS task (
   KEY date_deadline (account_id,date_deadline),
   KEY status (account_id,status),
   KEY name (account_id,name),
-  KEY project_id (account_id,project_id),
+  KEY project_id (project_id),
   KEY account_id (account_id)
 );
 
