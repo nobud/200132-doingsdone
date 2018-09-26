@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS project (
 CREATE TABLE IF NOT EXISTS task (
   id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
   date_create datetime NOT NULL,
-  date_complete datetime NOT NULL,
+  date_complete datetime,
   date_deadline datetime DEFAULT NULL,
   status tinyint(1) unsigned NOT NULL DEFAULT 0,
   name varchar(300) NOT NULL,
