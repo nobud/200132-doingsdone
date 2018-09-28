@@ -1,4 +1,6 @@
 <?php
+require_once 'mysql_helper.php';
+
 // функция шаблонизатор
 function include_template($name, $data) {
   $name = 'templates/' . $name;
@@ -17,7 +19,7 @@ function include_template($name, $data) {
 function get_count_tasks($tasks, $project) {
   $count_tasks = 0;
   foreach($tasks as $key => $val) {
-    if ($val['project_category'] == $project) {
+    if ($val['project_id'] == $project) {
       $count_tasks++;
     };
   };
@@ -43,6 +45,49 @@ function is_important($datetime_deadline) {
   }
   return $result;
 }
+
+// получить результат запроса в виде строк из объекта результата запроса
+// $link - ресурс соединения
+// $res - объект результата запроса
+function get_rows($link, $res) {
+  $rows = [];
+  $error_content = '';
+  if ($res) {
+    $rows = mysqli_fetch_all($res, MYSQLI_ASSOC);
+  } else {
+    $error = mysqli_error($link);
+    $error_content = include_template('error.php', ['error' => $error]);
+  }
+  return ['values' => $rows, 'error_content' => $error_content];
+}
+
+// получить результат запроса в виде одной строки из объекта результата запроса
+// $link - ресурс соединения
+// $res - объект результата запроса
+function get_row($link, $res) {
+  $row = [];
+  $error_content = '';
+  if ($res) {
+    $row = mysqli_fetch_assoc($res);
+  } else {
+    $error = mysqli_error($link);
+    $error_content = include_template('error.php', ['error' => $error]);
+  }
+  return ['value' => $row, 'error_content' => $error_content];
+}
+
+// получить объект результата после выполнения подготовленного выражения
+// $link ресурс соединения
+// SQL запрос с плейсхолдерами вместо значений
+// данные для вставки на место плейсхолдеров
+function get_res_stmt($link, $sql, $data = []) {
+  $stmt = db_get_prepare_stmt($link, $sql, $data);
+  mysqli_stmt_execute($stmt);
+  $res = mysqli_stmt_get_result($stmt);
+  return $res;
+}
+
+
 
 
 

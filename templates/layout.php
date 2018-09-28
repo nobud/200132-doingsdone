@@ -43,6 +43,9 @@
 
       <main class="content__main">
         <?=$main_content; ?>
+        <div class="content__error">
+          <?=$error_content; ?>
+        </div>
       </main>
     </div>
   </div>
