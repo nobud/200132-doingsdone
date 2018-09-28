@@ -25,9 +25,9 @@
 
 <table class="tasks">
   <?php foreach ($tasks as $key => $val): ?>
-    <?php if (!$val['is_completed'] || $show_complete_tasks): ?>
-      <tr class="tasks__item task <?php if ($val['is_completed']): ?>task--completed<?php endif; ?>
-      <?php if (is_important($val['date'])): ?>task--important<?php endif; ?>" >
+    <?php if (!$val['status'] || $show_complete_tasks): ?>
+      <tr class="tasks__item task <?php if ($val['status']): ?>task--completed<?php endif; ?>
+      <?php if (is_important($val['date_deadline'])): ?>task--important<?php endif; ?>" >
         <td class="task__select">
           <label class="checkbox task__checkbox">
             <input class="checkbox__input visually-hidden task__checkbox" type="checkbox" value="1">
@@ -36,10 +36,13 @@
         </td>
 
         <td class="task__file">
-          <a class="download-link" href="#">Home.psd</a>
+          <?php if (!is_null($val['attached'])): ?><a class="download-link" href="#"><?=esc($val['attached']); ?></a><?php endif; ?>
         </td>
 
-        <td class="task__date"><?=esc($val['date']); ?></td>
+        <td class="task__date">
+          <?php if (!is_null($val['date_deadline'])): ?><?=esc($val['date_deadline']); ?>
+          <?php else: ?>нет<?php endif; ?>
+        </td>
       </tr>
     <?php endif; ?>
   <?php endforeach; ?>
