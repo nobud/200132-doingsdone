@@ -15,17 +15,6 @@ function include_template($name, $data) {
   return $result;
 };
 
-// функция подсчета задач для заданного проекта
-function get_count_tasks($tasks, $project) {
-  $count_tasks = 0;
-  foreach($tasks as $key => $val) {
-    if ($val['project_id'] == $project) {
-      $count_tasks++;
-    };
-  };
-  return $count_tasks;
-};
-
 function esc($str) {
   $text = htmlspecialchars($str);
   return $text;
@@ -85,6 +74,13 @@ function get_res_stmt($link, $sql, $data = []) {
   mysqli_stmt_execute($stmt);
   $res = mysqli_stmt_get_result($stmt);
   return $res;
+}
+
+// сформировать адрес ссылки с учетом заданных параметров запроса и имени скрипта
+function set_url($params, $scriptname) {
+  $query = http_build_query($params);
+  $url = "/" . $scriptname . "?" . $query;
+  return $url;
 }
 
 
