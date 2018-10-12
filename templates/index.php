@@ -30,17 +30,18 @@
       <?php if (is_important($val['date_deadline'])): ?>task--important<?php endif; ?>" >
         <td class="task__select">
           <label class="checkbox task__checkbox">
-            <input class="checkbox__input visually-hidden task__checkbox" type="checkbox" value="1">
+            <input class="checkbox__input visually-hidden task__checkbox" type="checkbox" value="1"
+               <?php if ($val['status']): ?>checked<?php endif; ?>>
             <span class="checkbox__text"><?=esc($val['name']); ?></span>
           </label>
         </td>
 
         <td class="task__file">
-          <?php if (!is_null($val['attached'])): ?><a class="download-link" href="#"><?=esc($val['attached']); ?></a><?php endif; ?>
+          <?php if (!is_null($val['attached'])): ?><a class="download-link" href="<?=$directory_upload_file . $val['attached']; ?>">файл</a><?php endif; ?>
         </td>
 
         <td class="task__date">
-          <?php if (!is_null($val['date_deadline'])): ?><?=esc($val['date_deadline']); ?>
+          <?php if (!is_null($val['date_deadline'])): ?><?=esc(format_date($val['date_deadline'])); ?>
           <?php else: ?>нет<?php endif; ?>
         </td>
       </tr>

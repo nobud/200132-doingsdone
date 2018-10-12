@@ -35,19 +35,24 @@ function is_important($datetime_deadline) {
   return $result;
 }
 
+// показать сообщение об ошибке
+function show_error_content($error) {
+  $error_content = include_template('error.php', ['error' => $error]);
+  exit($error_content);
+}
+
 // получить результат запроса в виде строк из объекта результата запроса
 // $link - ресурс соединения
 // $res - объект результата запроса
 function get_rows($link, $res) {
   $rows = [];
-  $error_content = '';
   if ($res) {
     $rows = mysqli_fetch_all($res, MYSQLI_ASSOC);
   } else {
     $error = mysqli_error($link);
-    $error_content = include_template('error.php', ['error' => $error]);
+    show_error_content($error);
   }
-  return ['values' => $rows, 'error_content' => $error_content];
+  return $rows;
 }
 
 // получить результат запроса в виде одной строки из объекта результата запроса
@@ -55,17 +60,16 @@ function get_rows($link, $res) {
 // $res - объект результата запроса
 function get_row($link, $res) {
   $row = [];
-  $error_content = '';
   if ($res) {
     $row = mysqli_fetch_assoc($res);
   } else {
     $error = mysqli_error($link);
-    $error_content = include_template('error.php', ['error' => $error]);
+    show_error_content($error);
   }
-  return ['value' => $row, 'error_content' => $error_content];
+  return $row;
 }
 
-// получить объект результата после выполнения подготовленного выражения
+// получить объект результата для запроса SELECT после выполнения подготовленного выражения
 // $link ресурс соединения
 // SQL запрос с плейсхолдерами вместо значений
 // данные для вставки на место плейсхолдеров
@@ -76,14 +80,74 @@ function get_res_stmt($link, $sql, $data = []) {
   return $res;
 }
 
+// проверить объект результата для запросов UPDATE и INSERT после выполнения подготовленного выражения
+// $link ресурс соединения
+// SQL запрос с плейсхолдерами вместо значений
+// данные для вставки на место плейсхолдеров
+function is_res_stmt($link, $sql, $data = []) {
+  $stmt = db_get_prepare_stmt($link, $sql, $data);
+  $res = mysqli_stmt_execute($stmt);
+  return $res;
+}
+
+// начать транзакцию
+function trans_begin($link){
+  mysqli_query($link, "BEGIN");
+}
+
+// завершить транзакцию
+function trans_commit($link){
+  mysqli_query($link, "COMMIT");
+}
+
+// откатить транзакцию
+function trans_rollback($link){
+  mysqli_query($link, "ROLLBACK");
+}
+
+// вывод даты в заданном формате
+function format_date($date_str, $format='d.m.Y H:i:s') {
+  $date = date_create($date_str);
+  return date_format($date, $format);
+}
+
+// проверка валидности формата даты
+function is_valid_date_format($date_str, $format = 'd.m.Y')
+{
+  $date = date_create($date_str);
+  return $date && $date->format($format) == $date_str;
+}
+
+// проверка валидности формата даты
+function is_correct_date($date_str)
+{
+  $result = false;
+  $date_parts = get_date_parts($date_str);
+  if ($date_parts) {
+    $result = checkdate($date_parts['m'], $date_parts['d'], $date_parts['y']);
+  }
+  return $result;
+}
+
+// получить из даты день, месяц, год в виде ассоциативного массива
+function get_date_parts($date_str) {
+  $date_parts = [];
+  if (!empty($date_str)) {
+    $date = date_create($date_str);
+    if ($date) {
+      $date_parts = ['d' => $date->format('d'),
+        'm' => $date->format('m'),
+        'y' => $date->format('Y')];
+    }
+  }
+  return $date_parts;
+}
+
 // сформировать адрес ссылки с учетом заданных параметров запроса и имени скрипта
 function set_url($params, $scriptname) {
   $query = http_build_query($params);
   $url = "/" . $scriptname . "?" . $query;
   return $url;
 }
-
-
-
 
 
