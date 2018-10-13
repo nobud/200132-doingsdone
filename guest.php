@@ -4,11 +4,6 @@ require_once 'functions.php';
 require_once 'init.php';
 
 $fields_with_error = [];
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-
-
-
-}
 
 $page_content = include_template('guest.php', []);
 

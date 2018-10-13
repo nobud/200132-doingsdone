@@ -11,7 +11,6 @@ $db = [
   'password' => '',
   'database' => 'doingsdone'];
 
-$current_user_id = 1;
 $show_complete_tasks = rand(0, 1);
 
 // установить подключение
@@ -25,12 +24,3 @@ if (!$link) {
 }
 
 mysqli_set_charset($link, 'utf8');
-
-// пользователь
-//try {
-//  $user = get_user_data($link, $sql_user, $current_user_id);
-//  $user_name = get_user_name($user);
-//}
-//catch(Exception $e) {
-//  show_error_content($e->getMessage());
-//}

@@ -3,12 +3,16 @@ require_once 'data-bd.php';
 require_once 'functions.php';
 require_once 'init.php';
 
+session_start();
+
 if (!isset($_SESSION['user'])) {
  header('Location: /guest.php');
  exit();
 }
 
 try {
+  // текущий пользователь
+  $current_user_id = $_SESSION['user']['id'];
   // проекты
   $projects = get_projects($link, $sql_projects, $current_user_id);
 
@@ -48,9 +52,10 @@ try {
     'side_content' => $side_content,
     'title' => $title
   ]);
+
+  echo $layout_content;
 }
 catch(Exception $e) {
   show_error_content($e->getMessage());
 }
 
-echo $layout_content;
