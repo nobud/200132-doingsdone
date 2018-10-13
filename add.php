@@ -1,7 +1,16 @@
 <?php
+
 require_once 'data-bd.php';
 require_once 'functions.php';
 require_once 'init.php';
+
+if (!isset($_SESSION['user'])) {
+  header('Location: /guest.php');
+  exit();
+}
+
+
+
 
 try {
 // проекты
@@ -107,7 +116,6 @@ try {
   $layout_content = include_template('layout.php', [
     'main_content' => $page_content,
     'side_content' => $side_content,
-    'user_name' => $user_name,
     'title' => $title
   ]);
 }
