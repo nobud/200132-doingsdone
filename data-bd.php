@@ -1,6 +1,9 @@
 <?php
-// Имя пользователя по его id
-$sql_user = 'SELECT name FROM account WHERE id = ?';
+
+// Получить данные пользователя
+$sql_user_for_id = 'SELECT * FROM account WHERE id = ?';
+$sql_user_for_email = 'SELECT * FROM account WHERE email = ?';
+$sql_user_for_name = 'SELECT * FROM account WHERE name = ?';
 
 // Список проектов у текущего пользователя
 $sql_projects = 'SELECT * FROM project WHERE account_id = ?';
@@ -27,18 +30,6 @@ function get_sql_tasks_all($show_complete_task) {
 function get_sql_tasks_in_project($show_complete_task) {
   $sql_tasks_in_project = 'SELECT * FROM task WHERE project_id = ? ' . get_sql_add_check_status($show_complete_task) . ' ORDER BY date_deadline DESC';
   return $sql_tasks_in_project;
-}
-
-// получить данные о пользователе по его id
-function get_user_data($link, $sql_user, $id) {
-  $res_user = get_res_stmt($link, $sql_user, [$id]);
-  $user = get_row($link, $res_user);
-  return $user;
-}
-
-// получить имя пользователя из данных пользователя
-function get_user_name($user) {
-  return $user['name'];
 }
 
 // получить проекты
@@ -88,18 +79,50 @@ function get_tasks($link, $is_set_id, $show_complete_tasks, $current_user_id) {
   return $tasks;
 }
 
-// сохранить задачу
-function add_task($link, $values, $script_name) {
+// добавить задачу
+function add_task($link, $values) {
   $sql = 'INSERT INTO task (date_create, name, date_deadline, project_id, account_id) VALUES (now(), ?, ?, ?, ?)';
   $id_task = 0;
   $res = is_res_stmt($link, $sql, $values);
   if ($res) {
     $id_task = mysqli_insert_id($link);
-    header('Location: ' . $script_name);
   }
   else {
     $error = mysqli_error($link);
     show_error_content($error);
   }
   return $id_task;
+}
+
+// проверить существование пользователя по email
+function is_user_exist($link, $sql, $email) {
+  $res = get_res_stmt($link, $sql, [$email]);
+  return mysqli_num_rows($res) > 0;
+}
+
+// получить данные о пользователе по параметру поиска $param
+function get_user_data($link, $sql, $param) {
+  $res_user = get_res_stmt($link, $sql, [$param]);
+  $user = get_row($link, $res_user);
+  return $user;
+}
+
+// получить имя пользователя из данных пользователя
+function get_user_name($user) {
+  return $user['name'];
+}
+
+// добавить пользователя
+function add_user($link, $values) {
+  $sql = 'INSERT INTO account (name, email, password, date_reg) VALUES (?, ?, ?, DATE(NOW()))';
+  $id_user = 0;
+  $res = is_res_stmt($link, $sql, $values);
+  if ($res) {
+    $id_user = mysqli_insert_id($link);
+  }
+  else {
+    $error = mysqli_error($link);
+    show_error_content('Не удалось добавить пользователя ' . $error);
+  }
+  return $id_user;
 }
