@@ -6,7 +6,7 @@ $sql_user_for_email = 'SELECT * FROM account WHERE email = ?';
 $sql_user_for_name = 'SELECT * FROM account WHERE name = ?';
 
 // Список проектов у текущего пользователя
-$sql_projects = 'SELECT * FROM project WHERE account_id = ?';
+$sql_projects = 'SELECT * FROM project WHERE account_id = ? ORDER BY name ASC';
 
 // Получить текст запроса - Количество задач для каждого проекта
 function get_sql_count_task_in_project($show_complete_task) {
@@ -22,13 +22,13 @@ function get_sql_add_check_status($show_complete_task) {
 
 // получить текст запроса - Список всех задач у текущего пользователя
 function get_sql_tasks_all($show_complete_task) {
-  $sql_tasks_all = 'SELECT * FROM task WHERE account_id = ? ' . get_sql_add_check_status($show_complete_task) . ' ORDER BY date_deadline DESC';
+  $sql_tasks_all = 'SELECT * FROM task WHERE account_id = ? ' . get_sql_add_check_status($show_complete_task) . ' ORDER BY date_deadline ASC';
   return $sql_tasks_all;
 }
 
 // получить текст запроса - Список задач, относящихся к выбранному проекту
 function get_sql_tasks_in_project($show_complete_task) {
-  $sql_tasks_in_project = 'SELECT * FROM task WHERE project_id = ? ' . get_sql_add_check_status($show_complete_task) . ' ORDER BY date_deadline DESC';
+  $sql_tasks_in_project = 'SELECT * FROM task WHERE project_id = ? ' . get_sql_add_check_status($show_complete_task) . ' ORDER BY date_deadline ASC';
   return $sql_tasks_in_project;
 }
 
@@ -92,6 +92,28 @@ function add_task($link, $values) {
     show_error_content($error);
   }
   return $id_task;
+}
+
+// добавить проект
+function add_project($link, $values) {
+  $sql = 'INSERT INTO project (name, account_id) VALUES (?, ?)';
+  $id_project = 0;
+  $res = is_res_stmt($link, $sql, $values);
+  if ($res) {
+    $id_project = mysqli_insert_id($link);
+  }
+  else {
+    $error = mysqli_error($link);
+    show_error_content($error);
+  }
+  return $id_project;
+}
+
+// проверить существование проекта с заданным именем у текущего пользователя
+function is_project_exist($link, $current_user_id, $name) {
+  $sql = 'SELECT * FROM project WHERE account_id = ? AND name = ?';
+  $res = get_res_stmt($link, $sql, [$current_user_id, $name]);
+  return mysqli_num_rows($res) > 0;
 }
 
 // проверить существование пользователя по email

@@ -2,7 +2,11 @@
 $name = $_POST['name'] ?? '';
 $date = $_POST['date'] ?? '';
 $attached = $_FILES['preview']['name'] ?? '';
-$id_project = $_POST['project'] ?? 0;
+if (isset($_POST['project'])) {
+    $id_project = $_POST['project'];
+} else {
+    $id_project = $_GET['id'] ?? 0;
+}
 ?>
 
 <h2 class="content__main-heading">Добавление задачи</h2>

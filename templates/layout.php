@@ -1,3 +1,7 @@
+<?php
+$active_project_id = $_GET['id'] ?? 0;
+?>
+
 <!DOCTYPE html>
 <html lang="ru">
 
@@ -25,7 +29,10 @@
           </div>
       <?php else: ?>
           <div class="main-header__side">
-              <a class="main-header__side-item button button--plus open-modal" href="../add.php">Добавить задачу</a>
+              <a class="main-header__side-item button button--plus open-modal"
+                 href="<?=$active_project_id ? set_url(['id' => $active_project_id], '../add.php') : '../add.php'; ?>">
+                  Добавить задачу
+              </a>
 
               <div class="main-header__side-item user-menu">
                   <div class="user-menu__image">
@@ -64,7 +71,10 @@
         </div>
 
       <?php if (!empty($user)): ?>
-          <a class="main-footer__button button button--plus" href="../add.php">Добавить задачу</a>
+          <a class="main-footer__button button button--plus"
+             href="<?=$active_project_id ? set_url(['id' => $active_project_id], '../add.php') : '../add.php'; ?>">
+              Добавить задачу
+          </a>
       <?php endif; ?>
 
         <div class="main-footer__social social">

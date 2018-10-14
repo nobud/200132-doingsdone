@@ -42,9 +42,11 @@ try {
       $date_deadline = '';
     }
 
-    // проверка существования выбранного идентификатора проекта
-    if (!check_is_correct_project_id($projects, $_POST['project'])) {
-      show_error_content('Проект с id=' . $_POST['project'] . ' не найден');
+    if (!isset($fields_with_error['project'])) {
+      // проверка существования выбранного идентификатора проекта
+      if (!check_is_correct_project_id($projects, $_POST['project'])) {
+        show_error_content('Проект с id ' . $_POST['project'] . ' не найден');
+      }
     }
 
     // если нет ошибок валидации - сохранить данные
@@ -76,7 +78,6 @@ try {
           if (!move_uploaded_file($tmp_file_name, $file_path . $uploaded_file)) {
             throw new Exception('Не удалось сохранить файл на сервере');
           }
-
           // сохранить ссылку на файл в БД
           $sql_set_file_task = 'UPDATE task SET attached = ? WHERE id = ?';
           $result_load = is_res_stmt($link, $sql_set_file_task, [$uploaded_file, $id_task]);
@@ -107,8 +108,7 @@ try {
   $side_content = include_template('side-projects.php', [
     'projects' => $projects,
     'count_task_in_projects' => $count_task_in_projects,
-    'scriptname' => $script_name,
-    'active_project_id' => 0
+    'scriptname' => $script_name
   ]);
 
   $layout_content = include_template('layout.php', [

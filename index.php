@@ -27,7 +27,6 @@ try {
     if (!check_is_correct_project_id($projects, $_GET['id'])) {
       show_error_content('Проект с id=' . $active_project_id . ' не найден');
     }
-    $active_project_id = $_GET['id'];
   }
 
   // задачи
@@ -42,9 +41,8 @@ try {
 
   $side_content = include_template ('side-projects.php', [
     'projects' => $projects,
-     'count_task_in_projects' => $count_task_in_projects,
-     'scriptname' => $script_name,
-     'active_project_id' => $active_project_id
+    'count_task_in_projects' => $count_task_in_projects,
+    'scriptname' => $script_name
   ]);
 
   $layout_content = include_template('layout.php', [
