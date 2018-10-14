@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS account (
   date_reg datetime NOT NULL,
   email varchar(60) NOT NULL,
   name varchar(40) NOT NULL,
-  password varchar(30) NOT NULL,
+  password varchar(80) NOT NULL,
   contacts varchar(300) DEFAULT NULL,
   UNIQUE KEY email (email),
   UNIQUE KEY name (name)

@@ -150,4 +150,17 @@ function set_url($params, $scriptname) {
   return $url;
 }
 
+// проверить заполнения обязательных полей
+// возвращает массив со списком ошибок с ключом по полю
+function check_fields_required($fields_required) {
+  $fields_with_error = [];
+  foreach ($fields_required as $field) {
+    if (empty($_POST[$field])) {
+      $fields_with_error[$field] = 'Поле не заполнено';
+    }
+  }
+  return $fields_with_error;
+}
+
+
 

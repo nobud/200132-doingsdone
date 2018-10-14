@@ -3,7 +3,16 @@ require_once 'data-bd.php';
 require_once 'functions.php';
 require_once 'init.php';
 
+session_start();
+
+if (!isset($_SESSION['user'])) {
+ header('Location: /guest.php');
+ exit();
+}
+
 try {
+  // текущий пользователь
+  $current_user_id = $_SESSION['user']['id'];
   // проекты
   $projects = get_projects($link, $sql_projects, $current_user_id);
 
@@ -33,20 +42,20 @@ try {
 
   $side_content = include_template ('side-projects.php', [
     'projects' => $projects,
-    'count_task_in_projects' => $count_task_in_projects,
-    'scriptname' => $script_name,
-    'active_project_id' => $active_project_id
+     'count_task_in_projects' => $count_task_in_projects,
+     'scriptname' => $script_name,
+     'active_project_id' => $active_project_id
   ]);
 
   $layout_content = include_template('layout.php', [
     'main_content' => $page_content,
     'side_content' => $side_content,
-    'user_name' => $user_name,
     'title' => $title
   ]);
+
+  echo $layout_content;
 }
 catch(Exception $e) {
   show_error_content($e->getMessage());
 }
 
-echo $layout_content;
