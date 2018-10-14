@@ -14,8 +14,10 @@ try {
 
     $email = $_POST['email'];
     // проверка валидности email
-    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-      $fields_with_error['email'] = 'Некорректный email';
+    if (!isset($fields_with_error['email'])) {
+      if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $fields_with_error['email'] = 'Некорректный email';
+      }
     }
 
     if (empty($fields_with_error)) {
@@ -47,8 +49,7 @@ try {
     'main_content' => $page_content,
     'side_content' => $side_content,
     'title' => $title,
-    'add_task' => false,
-    'is_authorization' => false
+    'user' => $_SESSION['user'] ?? []
   ]);
 
   echo $layout_content;

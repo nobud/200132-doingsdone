@@ -53,8 +53,7 @@ try {
     'main_content' => $page_content,
     'side_content' => $side_content,
     'title' => $title,
-    'add_task' => false,
-    'is_authorization' => false
+    'user' => $_SESSION['user'] ?? []
   ]);
 
   echo $layout_content;
