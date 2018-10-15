@@ -50,7 +50,8 @@ try {
   $layout_content = include_template('layout.php', [
     'main_content' => $page_content,
     'side_content' => $side_content,
-    'title' => $title
+    'title' => $title,
+    'user' => $_SESSION['user'] ?? []
   ]);
 
   echo $layout_content;

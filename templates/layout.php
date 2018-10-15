@@ -19,7 +19,7 @@
         <img src="img/logo.png" width="153" height="42" alt=<?='Логотип ' . $title; ?>>
       </a>
 
-      <?php if (!isset($_SESSION['user'])): ?>
+      <?php if (empty($user)): ?>
           <div class="main-header__side">
               <a class="main-header__side-item button button--transparent" href="../authorization.php">Войти</a>
           </div>
@@ -33,9 +33,8 @@
                   </div>
 
                   <div class="user-menu__data">
-                      <p><?=esc(($_SESSION['user']['name'])); ?></p>
-
-                      <a href="#">Выйти</a>
+                      <p><?= $user['name'] ?? ''; ?></p>
+                      <a href="../logout.php">Выйти</a>
                   </div>
               </div>
           </div>
@@ -64,7 +63,7 @@
             <p>Веб-приложение для удобного ведения списка дел.</p>
         </div>
 
-      <?php if (isset($_SESSION['user'])): ?>
+      <?php if (!empty($user)): ?>
           <a class="main-footer__button button button--plus" href="../add.php">Добавить задачу</a>
       <?php endif; ?>
 

@@ -11,8 +11,7 @@ $layout_content = include_template('layout.php', [
   'main_content' => $page_content,
   'side_content' => null,
   'title' => $title,
-  'add_task' => false,
-  'is_authorization' => false
+  'user' => $_SESSION['user'] ?? []
 ]);
 
 echo $layout_content;
