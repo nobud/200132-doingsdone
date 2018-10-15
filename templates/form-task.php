@@ -16,7 +16,7 @@ if (isset($_POST['project'])) {
 
     <input class="form__input
     <?php if (isset($errors['name'])): ?>form__input--error<?php endif; ?>"
-           type="text" name="name" id="name" value="<?=$name; ?>" placeholder="Введите название">
+           type="text" name="name" id="name" value="<?=esc($name); ?>" placeholder="Введите название">
     <?php if (isset($errors['name'])): ?>
         <p class="form__message">
             <span class="error-message"><?=$errors['name']; ?></span>
@@ -60,7 +60,7 @@ if (isset($_POST['project'])) {
     <label class="form__label" for="preview">Файл</label>
 
     <div class="form__input-file <?php if (isset($errors['preview'])): ?>form__input--error<?php endif; ?>">
-      <input class="visually-hidden" type="file" name="preview" id="preview" value="<?=$attached; ?>">
+      <input class="visually-hidden" type="file" name="preview" id="preview" value="<?=esc($attached); ?>">
 
       <label class="button button--transparent" for="preview">
           <span>Выберите файл</span>

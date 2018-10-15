@@ -1,7 +1,3 @@
-<?php
-$active_project_id = $_GET['id'] ?? 0;
-?>
-
 <h2 class="content__side-heading">Проекты</h2>
 
 <nav class="main-navigation">
@@ -11,7 +7,7 @@ $active_project_id = $_GET['id'] ?? 0;
       <?php if ($project['id'] == $active_project_id): ?>
         main-navigation__list-item--active
       <?php endif; ?>">
-        <a class="main-navigation__list-item-link" href="<?=set_url(['id' => $project['id']], $scriptname); ?>">
+        <a class="main-navigation__list-item-link" href="<?=set_url(['id' => $project['id'], 'show_completed' => $show_complete_tasks], $scriptname); ?>">
             <?=esc($project['name']); ?>
         </a>
         <span class="main-navigation__list-item-count"><?=$count_task_in_projects[$project['id']]; ?></span>

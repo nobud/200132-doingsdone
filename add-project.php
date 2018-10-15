@@ -15,11 +15,15 @@ try {
   // текущий пользователь
   $current_user_id = $_SESSION['user']['id'];
 
+  // флаг - показывать завершенные задачи
+  $show_complete_tasks = isset($_GET['show_completed']) && $_GET['show_completed'] ? 1 : 0;
+
   // проекты
   $projects = get_projects($link, $sql_projects, $current_user_id);
 
   // количество задач в проектах
   $count_task_in_projects = get_count_tasks($link, $show_complete_tasks, $current_user_id);
+  $active_project_id = $_GET['id'] ?? 0;
 
   // список полей с ошибками
   $fields_with_error = [];
@@ -68,7 +72,9 @@ try {
   $side_content = include_template('side-projects.php', [
     'projects' => $projects,
     'count_task_in_projects' => $count_task_in_projects,
-    'scriptname' => $script_name
+    'scriptname' => $script_name,
+    'active_project_id ' => $active_project_id,
+    'show_complete_tasks' => $show_complete_tasks
   ]);
 
   $layout_content = include_template('layout.php', [

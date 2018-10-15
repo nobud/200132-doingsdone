@@ -94,6 +94,16 @@ function add_task($link, $values) {
   return $id_task;
 }
 
+function change_status_task($link, $id_task) {
+  $sql = 'UPDATE task SET status = !status, date_complete=IF(status,now(),null) WHERE id = ?';
+  $res = is_res_stmt($link, $sql, $id_task);
+  if (!$res) {
+    $error = mysqli_error($link);
+    show_error_content($error);
+  }
+  return $res;
+}
+
 // добавить проект
 function add_project($link, $values) {
   $sql = 'INSERT INTO project (name, account_id) VALUES (?, ?)';

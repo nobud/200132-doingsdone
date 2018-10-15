@@ -11,8 +11,6 @@ $db = [
   'password' => '',
   'database' => 'doingsdone'];
 
-$show_complete_tasks = rand(0, 1);
-
 // установить подключение
 $link = mysqli_connect($db['host'], $db['user'], $db['password'], $db['database']);
 

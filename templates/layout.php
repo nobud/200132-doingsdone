@@ -40,7 +40,7 @@ $active_project_id = $_GET['id'] ?? 0;
                   </div>
 
                   <div class="user-menu__data">
-                      <p><?= $user['name'] ?? ''; ?></p>
+                      <p><?= esc($user['name']) ?? ''; ?></p>
                       <a href="../logout.php">Выйти</a>
                   </div>
               </div>
