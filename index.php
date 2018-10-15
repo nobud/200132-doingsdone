@@ -56,10 +56,17 @@ try {
   // получить список задач
   $tasks = get_tasks($link, $is_set_project_id, $show_complete_tasks, $current_user_id);
 
+  // фильтрация задач
+  $filter = $_GET['filter'] ?? 0;
+  if ($filter && !empty($filter)) {
+    $filtered_tasks = array_filter($tasks, $filter);
+  }
+
   $page_content = include_template ('index.php', [
     'projects' => $projects,
-    'tasks' => $tasks,
+    'tasks' => $filter ? $filtered_tasks : $tasks,
     'directory_upload_file' => $directory_upload_file,
+    'scriptname' => $script_name,
     'show_complete_tasks' => $show_complete_tasks
   ]);
 

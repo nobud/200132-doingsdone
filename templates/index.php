@@ -8,10 +8,14 @@
 
 <div class="tasks-controls">
   <nav class="tasks-switch">
-    <a href="/" class="tasks-switch__item tasks-switch__item--active">Все задачи</a>
-    <a href="/" class="tasks-switch__item">Повестка дня</a>
-    <a href="/" class="tasks-switch__item">Завтра</a>
-    <a href="/" class="tasks-switch__item">Просроченные</a>
+    <a href="<?=set_url(array_merge($_GET, ['filter' => '']), $scriptname); ?>" class="tasks-switch__item
+    <?php if(isset($_GET['filter']) && (empty($_GET['filter']))): ?>tasks-switch__item--active<?php endif; ?>">Все задачи</a>
+    <a href="<?=set_url(array_merge($_GET, ['filter' => 'today']), $scriptname); ?>" class="tasks-switch__item
+    <?php if(isset($_GET['filter']) && ($_GET['filter'] == 'today')): ?>tasks-switch__item--active<?php endif; ?>">Повестка дня</a>
+    <a href="<?=set_url(array_merge($_GET, ['filter' => 'tomorrow']), $scriptname) ;?>" class="tasks-switch__item
+    <?php if(isset($_GET['filter']) && ($_GET['filter'] == 'tomorrow')): ?>tasks-switch__item--active<?php endif; ?>">Завтра</a>
+    <a href="<?=set_url(array_merge($_GET, ['filter' => 'expire']), $scriptname); ?>" class="tasks-switch__item
+    <?php if(isset($_GET['filter']) && ($_GET['filter'] == 'expire')): ?>tasks-switch__item--active<?php endif; ?>">Просроченные</a>
   </nav>
 
   <label class="checkbox">
