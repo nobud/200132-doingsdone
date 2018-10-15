@@ -155,13 +155,6 @@ function format_date($date_str, $format='d.m.Y H:i:s') {
 }
 
 // проверка валидности формата даты
-function is_valid_date_format($date_str, $format = 'd.m.Y')
-{
-  $date = date_create($date_str);
-  return $date && $date->format($format) == $date_str;
-}
-
-// проверка валидности формата даты
 function is_correct_date($date_str)
 {
   $result = false;

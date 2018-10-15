@@ -30,7 +30,7 @@ $active_project_id = $_GET['id'] ?? 0;
       <?php else: ?>
           <div class="main-header__side">
               <a class="main-header__side-item button button--plus open-modal"
-                 href="<?=$active_project_id ? set_url(['id' => $active_project_id], '../add.php') : '../add.php'; ?>">
+                 href="<?=$active_project_id ? set_url(['id' => $active_project_id], '../add-task.php') : '../add-task.php'; ?>">
                   Добавить задачу
               </a>
 
@@ -72,7 +72,7 @@ $active_project_id = $_GET['id'] ?? 0;
 
       <?php if (!empty($user)): ?>
           <a class="main-footer__button button button--plus"
-             href="<?=$active_project_id ? set_url(['id' => $active_project_id], '../add.php') : '../add.php'; ?>">
+             href="<?=$active_project_id ? set_url(['id' => $active_project_id], '../add-task.php') : '../add-task.php'; ?>">
               Добавить задачу
           </a>
       <?php endif; ?>
