@@ -2,17 +2,21 @@
 $name = $_POST['name'] ?? '';
 $date = $_POST['date'] ?? '';
 $attached = $_FILES['preview']['name'] ?? '';
-$id_project = $_POST['project'] ?? 0;
+if (isset($_POST['project'])) {
+    $id_project = $_POST['project'];
+} else {
+    $id_project = $_GET['id'] ?? 0;
+}
 ?>
 
 <h2 class="content__main-heading">Добавление задачи</h2>
-<form class="form" action="add.php" method="post" enctype="multipart/form-data">
+<form class="form" action="add-task.php" method="post" enctype="multipart/form-data">
   <div class="form__row">
     <label class="form__label" for="name">Название <sup>*</sup></label>
 
     <input class="form__input
     <?php if (isset($errors['name'])): ?>form__input--error<?php endif; ?>"
-           type="text" name="name" id="name" value="<?=$name; ?>" placeholder="Введите название">
+           type="text" name="name" id="name" value="<?=esc($name); ?>" placeholder="Введите название">
     <?php if (isset($errors['name'])): ?>
         <p class="form__message">
             <span class="error-message"><?=$errors['name']; ?></span>
@@ -56,7 +60,7 @@ $id_project = $_POST['project'] ?? 0;
     <label class="form__label" for="preview">Файл</label>
 
     <div class="form__input-file <?php if (isset($errors['preview'])): ?>form__input--error<?php endif; ?>">
-      <input class="visually-hidden" type="file" name="preview" id="preview" value="<?=$attached; ?>">
+      <input class="visually-hidden" type="file" name="preview" id="preview" value="<?=esc($attached); ?>">
 
       <label class="button button--transparent" for="preview">
           <span>Выберите файл</span>

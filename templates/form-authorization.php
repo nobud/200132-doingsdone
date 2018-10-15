@@ -1,12 +1,8 @@
 <?php
-if (isset($_GET['email'])) {
-    $email = $_GET['email'];
+if (isset($_POST['email'])) {
+    $email = $_POST['email'];
 } else {
-    if (isset($_POST['email'])) {
-        $email = $_POST['email'];
-    } else {
-        $email = '';
-    }
+    $email = $_GET['email'] ?? '';
 }
 ?>
 

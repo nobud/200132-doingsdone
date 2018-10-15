@@ -7,7 +7,7 @@
       <?php if ($project['id'] == $active_project_id): ?>
         main-navigation__list-item--active
       <?php endif; ?>">
-        <a class="main-navigation__list-item-link" href="<?=set_url(['id' => $project['id']], $scriptname); ?>">
+        <a class="main-navigation__list-item-link" href="<?=set_url(['id' => $project['id'], 'show_completed' => $show_complete_tasks], $scriptname); ?>">
             <?=esc($project['name']); ?>
         </a>
         <span class="main-navigation__list-item-count"><?=$count_task_in_projects[$project['id']]; ?></span>
@@ -17,4 +17,4 @@
 </nav>
 
 <a class="button button--transparent button--plus content__side-button"
-   href="pages/form-project.html" target="project_add">Добавить проект</a>
+   href="../add-project.php">Добавить проект</a>

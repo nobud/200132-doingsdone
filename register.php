@@ -10,21 +10,25 @@ try {
     // проверка заполнения обязательных полей
     $fields_with_error = check_fields_required(['email', 'name', 'password']);
 
-    // проверка корректности email
     $user['email'] = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
-    if (!filter_var($user['email'], FILTER_VALIDATE_EMAIL)) {
-      $fields_with_error['email'] = 'Некорректный email';
-    }
-
-    // проверка существования пользователя с таким же email
-    if (is_user_exist($link, $sql_user_for_email, $user['email'])) {
-      $fields_with_error['email'] = 'Пользователь с таким email уже зарегистрирован';
+    if (!isset($fields_with_error['email'])) {
+      // проверка корректности email
+      if (!filter_var($user['email'], FILTER_VALIDATE_EMAIL)) {
+        $fields_with_error['email'] = 'Некорректный email';
+      } else {
+        // проверка существования пользователя с таким же email
+        if (is_user_exist($link, $sql_user_for_email, $user['email'])) {
+          $fields_with_error['email'] = 'Пользователь с таким email уже зарегистрирован';
+        }
+      }
     }
 
     $user['name'] = $_POST['name'];
-    // проверка существования пользователя с таким же name
-    if (is_user_exist($link,$sql_user_for_name, $user['name'])) {
-      $fields_with_error['name'] = 'Пользователь с таким именем уже зарегистрирован';
+    if (!isset($fields_with_error['email'])) {
+      // проверка существования пользователя с таким же name
+      if (is_user_exist($link,$sql_user_for_name, $user['name'])) {
+        $fields_with_error['name'] = 'Пользователь с таким именем уже зарегистрирован';
+      }
     }
 
     // если нет ошибок валидации - сохранить данные

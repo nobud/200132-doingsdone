@@ -20,19 +20,62 @@ function esc($str) {
   return $text;
 }
 
+// количество часов до даты дедлайна
+function get_hours_left($datetime_deadline) {
+  $secs_in_hour = 3600;
+  $now = time();
+  $deadline = strtotime($datetime_deadline); //при невозможности конвертации возвращает false
+  $hours_left = ($deadline - $now)/$secs_in_hour;
+  return $hours_left;
+}
+
 // функция определения важности задачи
 // возвращает true, если до даты дедлайна осталось менее 24ч
+function get_timestatus_task($datetime_deadline) {
+  if ($datetime_deadline) {
+    $hours_left = get_hours_left($datetime_deadline);
+    switch ($hours_left) {
+      case ($hours_left < 0): {
+        return 'expire';
+      }
+      case ($hours_left <= 24 && $hours_left >=0): {
+        return 'today';
+      }
+      case ($hours_left <= 48 && $hours_left >=0): {
+        return 'tomorrow';
+      }
+      default: {
+        return 'unknown';
+      }
+    }
+  }
+}
+
+// функция определения важности задачи
+// возвращает true, если до даты дедлайна осталось менее суток или задача просрочена
 function is_important($datetime_deadline) {
   $result = false;
-  $secs_in_hour = 3600;
   $condition = 24; //условие важности задачи - количество часов, оставшихся до даты дедлайна
-  $deadline = strtotime($datetime_deadline); //при невозможности конвертации возвращает false
-  if ($deadline) {
-    $now = time();
-    $hours_left = ($deadline - $now)/$secs_in_hour;
+  if ($datetime_deadline) {
+    $hours_left = get_hours_left($datetime_deadline);
     $result = $hours_left <= $condition;
   }
   return $result;
+}
+
+// возвращает true, если до даты дедлайна осталось 24ч или менее, но задача не просрочена
+function today($value) {
+  return get_timestatus_task($value['date_deadline']) == 'today';
+}
+
+// возвращает true, если до даты дедлайна осталось 48ч или менее, но задача не просрочена
+function tomorrow($value) {
+  return get_timestatus_task($value['date_deadline']) == 'tomorrow';
+}
+
+// возвращает true, если задача просрочена
+function expire($value) {
+  return get_timestatus_task($value['date_deadline']) == 'expire';
 }
 
 // показать сообщение об ошибке
@@ -112,13 +155,6 @@ function format_date($date_str, $format='d.m.Y H:i:s') {
 }
 
 // проверка валидности формата даты
-function is_valid_date_format($date_str, $format = 'd.m.Y')
-{
-  $date = date_create($date_str);
-  return $date && $date->format($format) == $date_str;
-}
-
-// проверка валидности формата даты
 function is_correct_date($date_str)
 {
   $result = false;
@@ -161,6 +197,10 @@ function check_fields_required($fields_required) {
   }
   return $fields_with_error;
 }
+
+
+
+
 
 
 
